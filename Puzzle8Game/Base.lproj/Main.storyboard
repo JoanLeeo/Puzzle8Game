@@ -45,13 +45,29 @@
                                     <action selector="btn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4je-7W-S4T"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5WO-Zy-LoM">
+                                <rect key="frame" x="130" y="541" width="62" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="打开相册"/>
+                                <connections>
+                                    <action selector="openCamera:" destination="BYZ-38-t0r" eventType="touchUpInside" id="HUC-AU-3Gq"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Puzzle 8" id="gOc-yF-7Xh">
+                        <barButtonItem key="leftBarButtonItem" systemItem="refresh" id="luh-iH-5Rg">
+                            <connections>
+                                <action selector="refreshAction:" destination="BYZ-38-t0r" id="ceX-4b-JlN"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="more" style="done" id="Ffc-PD-Kt9">
                             <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="moreAction:" destination="BYZ-38-t0r" id="d5F-lc-o4o"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
@@ -62,6 +78,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="more" width="44" height="44"/>
+        <image name="more" width="22" height="22"/>
     </resources>
 </document>

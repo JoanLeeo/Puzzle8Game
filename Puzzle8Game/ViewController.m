@@ -10,7 +10,7 @@
 
 #define kPuzzleBtnGap 2
 
-@interface ViewController (){
+@interface ViewController ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
 
     UIButton *_maxPuzzleBtn;
     int _difficulty;//难度系数 3*3 4*4 5*5
@@ -21,6 +21,7 @@
 
 @property (nonatomic, strong) NSMutableArray *randomNums;//存储初始化nums
 @property (nonatomic, strong) UIView *puzzleBgView;
+@property (nonatomic, strong) UIImage *puzzleBgImg; //背景图片
 
 
 @end
@@ -225,6 +226,48 @@
     [self.randomNums addObjectsFromArray:[self getNewAvailableRandomNums]];
     [self customUI];
     
+}
+- (IBAction)openCamera:(id)sender {
+    __weak typeof(self) weakSelf = self;
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"选择图片" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    [alert addAction:[UIAlertAction actionWithTitle:@"拍照" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [weakSelf selectImageWithSourceType:UIImagePickerControllerSourceTypeCamera];
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"相册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [weakSelf selectImageWithSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
+    
+}
+
+/// 选择图片
+- (void)selectImageWithSourceType:(UIImagePickerControllerSourceType)sourceType {
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.sourceType = sourceType;
+    picker.allowsEditing = YES;
+    [self.navigationController presentViewController:picker animated:YES completion:nil];
+    
+}
+
+
+- (IBAction)refreshAction:(UIBarButtonItem *)sender {
+}
+
+- (IBAction)moreAction:(UIBarButtonItem *)sender {
+    
+    
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
+    [picker dismissViewControllerAnimated:YES completion:^{
+        self.puzzleBgImg = info[UIImagePickerControllerEditedImage];
+    }];
 }
 
 
