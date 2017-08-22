@@ -510,6 +510,7 @@
 				4D4D19A41F49E256009C7B4C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4D4D19A51F49E256009C7B4C /* Build configuration list for PBXNativeTarget "Puzzle8GameTests" */ = {
 			isa = XCConfigurationList;
@@ -518,6 +519,7 @@
 				4D4D19A71F49E256009C7B4C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4D4D19A81F49E256009C7B4C /* Build configuration list for PBXNativeTarget "Puzzle8GameUITests" */ = {
 			isa = XCConfigurationList;
@@ -526,6 +528,7 @@
 				4D4D19AA1F49E256009C7B4C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

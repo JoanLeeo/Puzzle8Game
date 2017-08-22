@@ -10,12 +10,15 @@
 
 #define kPuzzleBtnGap 2
 
+
+#define kTipLbTag 1000
+
 @interface ViewController ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
 
     UIButton *_maxPuzzleBtn;
     int _difficulty;//难度系数 3*3 4*4 5*5
     int _puzzleCount;
-    
+    BOOL _showBgImg;
 
 }
 
@@ -23,12 +26,22 @@
 @property (nonatomic, strong) UIView *puzzleBgView;
 @property (nonatomic, strong) UIImage *puzzleBgImg; //背景图片
 
+@property (nonatomic, strong) NSMutableArray *puzzleImgArr;//存储分割img
+
 
 @end
 
 
 
 @implementation ViewController
+
+#pragma mark - Lazy loading
+- (NSMutableArray *)puzzleImgArr {
+    if (!_puzzleImgArr) {
+        _puzzleImgArr = [NSMutableArray array];
+    }
+    return _puzzleImgArr;
+}
 
 - (NSMutableArray *)randomNums {
     if (!_randomNums) {
@@ -50,12 +63,6 @@
     [self.randomNums addObjectsFromArray:[self getNewAvailableRandomNums]];
     [self customUI];
     //随机数字
-    
-    
-    
-    
-    
-    
     
     
 }
@@ -88,20 +95,56 @@
         puzzleBtn.frame = CGRectMake(puzzleBtnX, puzzleBtnY, puzzleBtnW, puzzleBtnH);
         puzzleBtn.tag = i;
         puzzleBtn.clipsToBounds = YES;
+        [_puzzleBgView addSubview:puzzleBtn];
+        
         
         int  puzzleValue = [self.randomNums[i] intValue];
         if (puzzleValue == _puzzleCount - 1) {
             puzzleBtn.backgroundColor = [UIColor clearColor];
             _maxPuzzleBtn = puzzleBtn;
         } else {
-            [puzzleBtn setTitle:[NSString stringWithFormat:@"%d", puzzleValue] forState:UIControlStateNormal];
-           puzzleBtn.backgroundColor = [UIColor greenColor];
+            
+            if (_showBgImg) {
+                [puzzleBtn setBackgroundImage:self.puzzleImgArr[puzzleValue] forState:UIControlStateNormal];
+                [puzzleBtn setBackgroundImage:self.puzzleImgArr[puzzleValue] forState:UIControlStateHighlighted];
+                
+                //tip
+                CGFloat tipLbW = 15;
+                CGFloat tipLbH = tipLbW;
+                CGFloat tipLbX = puzzleBtnW - tipLbW;
+                CGFloat tipLbY = puzzleBtnH - tipLbH;
+                
+                UILabel *tipLb = [[UILabel alloc] initWithFrame:CGRectMake(tipLbX, tipLbY, tipLbW, tipLbH)];
+                tipLb.tag = i + kTipLbTag;
+                tipLb.layer.cornerRadius = tipLbW * 0.5;
+                tipLb.layer.masksToBounds = YES;
+                tipLb.text = [NSString stringWithFormat:@"%d", puzzleValue + 1];
+                tipLb.font = [UIFont systemFontOfSize:8];
+                tipLb.alpha = 0.6;
+                tipLb.hidden = YES;
+                tipLb.textAlignment = NSTextAlignmentCenter;
+                tipLb.backgroundColor = [UIColor whiteColor];
+                [puzzleBtn addSubview:tipLb];
+                
+            } else {
+                [puzzleBtn setTitle:[NSString stringWithFormat:@"%d", puzzleValue + 1] forState:UIControlStateNormal];
+                puzzleBtn.backgroundColor = [UIColor greenColor];
+                
+            }
             [puzzleBtn addTarget:self action:@selector(puzzleBtnAction:) forControlEvents:UIControlEventTouchUpInside];
+            
         }
-        [_puzzleBgView addSubview:puzzleBtn];
+        
+        
+        
     }
 }
 
+
+
+
+
+#pragma mark - Btn Action
 - (void)puzzleBtnAction:(UIButton *)puzzleBtn {
     
     
@@ -180,7 +223,137 @@
     }
     
 }
+- (IBAction)difficultyBtnAction:(id)sender {
+    __weak typeof(self) weakSelf = self;
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"难度选择" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    [alert addAction:[UIAlertAction actionWithTitle:@"高" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        _difficulty = 5;
+        _puzzleCount = _difficulty * _difficulty;
+        weakSelf.title = @"Puzzle 24";
+        [weakSelf refreshAction:nil];
+        
+        
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"中" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        _difficulty = 4;
+        _puzzleCount = _difficulty * _difficulty;
+        weakSelf.title = @"Puzzle 15";
+        [weakSelf refreshAction:nil];
 
+    }]];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:@"低" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        _difficulty = 3;
+        _puzzleCount = _difficulty * _difficulty;
+        weakSelf.title = @"Puzzle 8";
+        [weakSelf refreshAction:nil];
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
+    
+    
+}
+- (IBAction)tipsBtnAction:(UIButton *)sender {
+    
+    
+    if (!_showBgImg) {
+        return;
+    }
+    int i = 0;
+    for (UIButton *puzzleBtn in _puzzleBgView.subviews) {
+        
+        UILabel *tipLb = [puzzleBtn viewWithTag:kTipLbTag + i];
+        
+        if (tipLb) {
+            tipLb.hidden = !tipLb.hidden;
+        }
+        i++;
+    }
+    
+    
+}
+
+//打开相册
+- (IBAction)openCamera:(id)sender {
+    __weak typeof(self) weakSelf = self;
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"选择图片" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    [alert addAction:[UIAlertAction actionWithTitle:@"拍照" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [weakSelf selectImageWithSourceType:UIImagePickerControllerSourceTypeCamera];
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"相册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [weakSelf selectImageWithSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"默认数字" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        _showBgImg = NO;
+        [weakSelf refreshAction:nil];
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
+    
+}
+
+- (IBAction)refreshAction:(UIBarButtonItem *)sender {
+    
+    if (_showBgImg) {
+        [self cutPuzzleImg:self.puzzleBgImg];
+    }
+    self.randomNums = nil;
+    [self.randomNums addObjectsFromArray:[self getNewAvailableRandomNums]];
+    [self customUI];
+}
+
+- (IBAction)moreAction:(UIBarButtonItem *)sender {
+    
+    
+}
+
+#pragma mark - UIImagePickerControllerDelegate
+
+/// 选择图片
+- (void)selectImageWithSourceType:(UIImagePickerControllerSourceType)sourceType {
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.sourceType = sourceType;
+    picker.allowsEditing = YES;
+    [self.navigationController presentViewController:picker animated:YES completion:nil];
+    
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
+    [picker dismissViewControllerAnimated:YES completion:^{
+        self.puzzleBgImg = info[UIImagePickerControllerEditedImage];
+        _showBgImg = YES;
+        [self refreshAction:nil];
+    }];
+}
+
+#pragma mark - Other
+- (void)cutPuzzleImg:(UIImage *)img {
+
+    self.puzzleImgArr = nil;
+    
+    CGFloat screenW = [UIScreen mainScreen].bounds.size.width;
+    CGFloat puzzleBtnW = screenW / _difficulty;
+    CGFloat multi = img.size.width / screenW;
+    CGFloat imgX = 0;
+    CGFloat imgY = 0;
+    CGFloat imgW = (screenW / _difficulty - kPuzzleBtnGap * 2) * multi;
+    CGFloat imgH = imgW;
+    
+    for (int i = 0; i < _puzzleCount; i++) {
+        imgX = (i % _difficulty * (puzzleBtnW + kPuzzleBtnGap * 2) + kPuzzleBtnGap) * multi;
+        imgY = (i / _difficulty * (puzzleBtnW + kPuzzleBtnGap * 2) + kPuzzleBtnGap) * multi;
+        // 切割图片
+        CGRect rect = CGRectMake(imgX, imgY, imgW, imgH);
+        CGImageRef imgRef = CGImageCreateWithImageInRect(img.CGImage, rect);
+        [self.puzzleImgArr addObject:[UIImage imageWithCGImage:imgRef]];
+    }
+    
+}
 - (void)isWin {
     NSInteger count = 0;
     for (int i = 0; i < _puzzleCount; i++) {
@@ -209,7 +382,6 @@
         
         NSMutableArray *randomNums = [NSMutableArray array];//随机数组
         for (int i = 0; i < _puzzleCount; i++) {
-            
             
             int randomNum = arc4random() % initializeNums.count;
             
@@ -241,81 +413,5 @@
         
     }
 }
-- (IBAction)btn:(id)sender {
-    __weak typeof(self) weakSelf = self;
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"难度选择" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    [alert addAction:[UIAlertAction actionWithTitle:@"高" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        _difficulty = 5;
-        _puzzleCount = _difficulty * _difficulty;
-        weakSelf.title = @"Puzzle 24";
-        [weakSelf refreshAction:nil];
-        
-        
-    }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"中" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        _difficulty = 4;
-        _puzzleCount = _difficulty * _difficulty;
-        weakSelf.title = @"Puzzle 15";
-        [weakSelf refreshAction:nil];
-
-    }]];
-    
-    [alert addAction:[UIAlertAction actionWithTitle:@"低" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        _difficulty = 3;
-        _puzzleCount = _difficulty * _difficulty;
-        weakSelf.title = @"Puzzle 8";
-        [weakSelf refreshAction:nil];
-    }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
-    [self presentViewController:alert animated:YES completion:nil];
-    
-    
-}
-- (IBAction)openCamera:(id)sender {
-    __weak typeof(self) weakSelf = self;
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"选择图片" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    [alert addAction:[UIAlertAction actionWithTitle:@"拍照" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [weakSelf selectImageWithSourceType:UIImagePickerControllerSourceTypeCamera];
-    }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"相册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [weakSelf selectImageWithSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-    }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
-    [self presentViewController:alert animated:YES completion:nil];
-    
-}
-
-/// 选择图片
-- (void)selectImageWithSourceType:(UIImagePickerControllerSourceType)sourceType {
-    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-    picker.delegate = self;
-    picker.sourceType = sourceType;
-    picker.allowsEditing = YES;
-    [self.navigationController presentViewController:picker animated:YES completion:nil];
-    
-}
-
-
-- (IBAction)refreshAction:(UIBarButtonItem *)sender {
-    self.randomNums = nil;
-    [self.randomNums addObjectsFromArray:[self getNewAvailableRandomNums]];
-    [self customUI];
-}
-
-- (IBAction)moreAction:(UIBarButtonItem *)sender {
-    
-    
-}
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    [picker dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
-    [picker dismissViewControllerAnimated:YES completion:^{
-        self.puzzleBgImg = info[UIImagePickerControllerEditedImage];
-    }];
-}
-
 
 @end
