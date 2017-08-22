@@ -6,6 +6,8 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -37,16 +39,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5WO-Zy-LoM">
-                                <rect key="frame" x="156" y="617" width="62" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="打开相册"/>
-                                <connections>
-                                    <action selector="openCamera:" destination="BYZ-38-t0r" eventType="touchUpInside" id="HUC-AU-3Gq"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hPX-VE-n7d">
-                                <rect key="frame" x="16" y="617" width="62" height="30"/>
+                                <rect key="frame" x="193" y="617" width="62" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="难度选择"/>
                                 <connections>
@@ -59,6 +53,22 @@
                                 <state key="normal" title="显示提示"/>
                                 <connections>
                                     <action selector="tipsBtnAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bpA-ie-ZYp"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M3t-ID-2iu">
+                                <rect key="frame" x="16" y="617" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="猪小妹"/>
+                                <connections>
+                                    <segue destination="gba-by-ZFU" kind="push" id="Qbj-vU-bDR"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5WO-Zy-LoM">
+                                <rect key="frame" x="100" y="617" width="62" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="打开相册"/>
+                                <connections>
+                                    <action selector="openCamera:" destination="BYZ-38-t0r" eventType="touchUpInside" id="HUC-AU-3Gq"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -82,10 +92,127 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-26" y="-554"/>
+            <point key="canvasLocation" x="-34" y="-613"/>
+        </scene>
+        <!--猪小妹-->
+        <scene sceneID="J5r-Bo-UVZ">
+            <objects>
+                <viewController id="gba-by-ZFU" customClass="PigViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="qxG-bT-UM4"/>
+                        <viewControllerLayoutGuide type="bottom" id="U96-o6-qpl"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="DG2-jF-jpK">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ajq-Ed-QVf" userLabel="Button1">
+                                <rect key="frame" x="191.5" y="72" width="175.5" height="176.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="ajq-Ed-QVf" secondAttribute="height" multiplier="1:1" id="YIb-Qh-yAx"/>
+                                </constraints>
+                                <state key="normal" backgroundImage="2"/>
+                                <state key="highlighted" backgroundImage="2"/>
+                                <connections>
+                                    <action selector="pigAction:" destination="gba-by-ZFU" eventType="touchUpInside" id="ctb-DS-hJG"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XL0-Tu-Qu8" userLabel="Button2">
+                                <rect key="frame" x="8" y="72" width="176" height="176"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="XL0-Tu-Qu8" secondAttribute="height" multiplier="1:1" id="oDf-4Y-v00"/>
+                                </constraints>
+                                <state key="normal" backgroundImage="1"/>
+                                <state key="highlighted" backgroundImage="1"/>
+                                <connections>
+                                    <action selector="pigAction:" destination="gba-by-ZFU" eventType="touchUpInside" id="9bo-az-Zp1"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UmI-89-0p7" userLabel="Button4">
+                                <rect key="frame" x="191.5" y="256.5" width="175.5" height="175.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="UmI-89-0p7" secondAttribute="height" multiplier="1:1" id="mAE-4m-ahZ"/>
+                                </constraints>
+                                <state key="normal" image="4" backgroundImage="1"/>
+                                <state key="highlighted" backgroundImage="4"/>
+                                <connections>
+                                    <action selector="pigAction:" destination="gba-by-ZFU" eventType="touchUpInside" id="11h-Uz-2eG"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="3" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OJT-0F-5Kn" userLabel="Button3">
+                                <rect key="frame" x="8" y="255.5" width="175.5" height="175.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="OJT-0F-5Kn" secondAttribute="height" multiplier="1:1" id="cez-kK-ocW"/>
+                                </constraints>
+                                <state key="normal" backgroundImage="3"/>
+                                <connections>
+                                    <action selector="pigAction:" destination="gba-by-ZFU" eventType="touchUpInside" id="mxy-mN-gve"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="UmI-89-0p7" secondAttribute="trailing" constant="-8" id="0C8-bD-cUd"/>
+                            <constraint firstItem="UmI-89-0p7" firstAttribute="top" secondItem="ajq-Ed-QVf" secondAttribute="bottom" constant="8" id="5nE-a7-zaM"/>
+                            <constraint firstItem="ajq-Ed-QVf" firstAttribute="leading" secondItem="XL0-Tu-Qu8" secondAttribute="trailing" constant="8" id="7PE-Af-me8"/>
+                            <constraint firstItem="OJT-0F-5Kn" firstAttribute="width" secondItem="UmI-89-0p7" secondAttribute="width" id="Ejd-nq-q62"/>
+                            <constraint firstItem="ajq-Ed-QVf" firstAttribute="top" secondItem="qxG-bT-UM4" secondAttribute="bottom" constant="8" id="NY0-qc-cGq"/>
+                            <constraint firstItem="XL0-Tu-Qu8" firstAttribute="width" secondItem="ajq-Ed-QVf" secondAttribute="width" id="WvH-31-pU9"/>
+                            <constraint firstItem="OJT-0F-5Kn" firstAttribute="top" secondItem="XL0-Tu-Qu8" secondAttribute="bottom" constant="8" id="ZNf-iu-Ydr"/>
+                            <constraint firstItem="UmI-89-0p7" firstAttribute="leading" secondItem="OJT-0F-5Kn" secondAttribute="trailing" constant="8" id="ZQ0-JF-XLm"/>
+                            <constraint firstItem="XL0-Tu-Qu8" firstAttribute="leading" secondItem="DG2-jF-jpK" secondAttribute="leadingMargin" constant="-8" id="k0S-UA-fX8"/>
+                            <constraint firstItem="XL0-Tu-Qu8" firstAttribute="top" secondItem="qxG-bT-UM4" secondAttribute="bottom" constant="8" id="lyl-Kb-Qek"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ajq-Ed-QVf" secondAttribute="trailing" constant="-8" id="v12-5R-j8x"/>
+                            <constraint firstItem="OJT-0F-5Kn" firstAttribute="leading" secondItem="DG2-jF-jpK" secondAttribute="leadingMargin" constant="-8" id="xVw-K5-Usv"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="猪小妹" id="xW6-Cp-AK3"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FNA-Da-czj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="858" y="-758"/>
+        </scene>
+        <!--猪小妹-->
+        <scene sceneID="7xx-Dk-udD">
+            <objects>
+                <collectionViewController id="OKY-pQ-jqB" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="b12-oW-7lq">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="dwG-0h-Ikj">
+                            <size key="itemSize" width="50" height="50"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Gvz-Bb-E8B">
+                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </view>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="OKY-pQ-jqB" id="WXj-IV-aoD"/>
+                            <outlet property="delegate" destination="OKY-pQ-jqB" id="GI8-fC-gFD"/>
+                        </connections>
+                    </collectionView>
+                    <navigationItem key="navigationItem" title="猪小妹" id="UhL-7m-AnN"/>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UmA-rk-uGr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2551" y="-904"/>
         </scene>
     </scenes>
     <resources>
+        <image name="1" width="300" height="300"/>
+        <image name="2" width="200" height="200"/>
+        <image name="3" width="540" height="540"/>
+        <image name="4" width="709" height="709"/>
         <image name="more" width="22" height="22"/>
     </resources>
 </document>

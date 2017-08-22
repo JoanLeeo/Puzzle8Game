@@ -7,13 +7,14 @@
 //
 
 #import "ViewController.h"
+#import "PigViewController.h"
 
 #define kPuzzleBtnGap 2
 
 
 #define kTipLbTag 1000
 
-@interface ViewController ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
+@interface ViewController ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate, PigViewControllerDelegate> {
 
     UIButton *_maxPuzzleBtn;
     int _difficulty;//难度系数 3*3 4*4 5*5
@@ -130,7 +131,7 @@
                 
             } else {
                 [puzzleBtn setTitle:[NSString stringWithFormat:@"%d", puzzleValue + 1] forState:UIControlStateNormal];
-                puzzleBtn.backgroundColor = [UIColor greenColor];
+                puzzleBtn.backgroundColor = [UIColor colorWithRed:0x4A / 255.0 green:0xC2 / 255.0 blue:0xFB / 255.0 alpha:1];
                 
             }
             [puzzleBtn addTarget:self action:@selector(puzzleBtnAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -447,6 +448,18 @@
         }
         
     }
+}
+
+- (void)changePig:(NSInteger)index {
+    _showBgImg = YES;
+    self.puzzleBgImg = [UIImage imageNamed:[NSString stringWithFormat:@"%ld.jpg", index]];
+    [self refreshAction:nil];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    id page2 = segue.destinationViewController;
+    // 设定委托为self
+    [page2 setValue:self forKey:@"delegate"];
 }
 
 @end
