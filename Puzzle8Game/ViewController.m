@@ -42,7 +42,7 @@
     [super viewDidLoad];
     
     
-    _difficulty = 4;
+    _difficulty = 3;
     _puzzleCount = _difficulty * _difficulty;
     
     
@@ -121,6 +121,9 @@
             puzzleBtn.center = maxPuzzleBtnCenter;
             _maxPuzzleBtn.center = puzzleBtnCenter;
         }];
+        
+        [self isWin];
+        
         return;
         
     }
@@ -138,6 +141,7 @@
             _maxPuzzleBtn.center = puzzleBtnCenter;
         }];
         
+        [self isWin];
         return;
     }
     //左
@@ -154,6 +158,7 @@
             _maxPuzzleBtn.center = puzzleBtnCenter;
         }];
         
+        [self isWin];
         return;
     }
     //右
@@ -169,10 +174,26 @@
             puzzleBtn.center = maxPuzzleBtnCenter;
             _maxPuzzleBtn.center = puzzleBtnCenter;
         }];
-       
+        
+        [self isWin];
         return;
     }
     
+}
+
+- (void)isWin {
+    NSInteger count = 0;
+    for (int i = 0; i < _puzzleCount; i++) {
+        if ([self.randomNums[i] intValue] != i) {
+            break;
+        }
+        count++;
+    }
+    if (count == _puzzleCount) {
+        UIAlertController *alert =   [UIAlertController alertControllerWithTitle:@"厉害了！我的妞！" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil]];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
 }
 
 - (NSMutableArray *)getNewAvailableRandomNums {
@@ -221,10 +242,33 @@
     }
 }
 - (IBAction)btn:(id)sender {
+    __weak typeof(self) weakSelf = self;
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"难度选择" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    [alert addAction:[UIAlertAction actionWithTitle:@"高" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        _difficulty = 5;
+        _puzzleCount = _difficulty * _difficulty;
+        weakSelf.title = @"Puzzle 24";
+        [weakSelf refreshAction:nil];
+        
+        
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"中" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        _difficulty = 4;
+        _puzzleCount = _difficulty * _difficulty;
+        weakSelf.title = @"Puzzle 15";
+        [weakSelf refreshAction:nil];
+
+    }]];
     
-    self.randomNums = nil;
-    [self.randomNums addObjectsFromArray:[self getNewAvailableRandomNums]];
-    [self customUI];
+    [alert addAction:[UIAlertAction actionWithTitle:@"低" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        _difficulty = 3;
+        _puzzleCount = _difficulty * _difficulty;
+        weakSelf.title = @"Puzzle 8";
+        [weakSelf refreshAction:nil];
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
+    
     
 }
 - (IBAction)openCamera:(id)sender {
@@ -253,6 +297,9 @@
 
 
 - (IBAction)refreshAction:(UIBarButtonItem *)sender {
+    self.randomNums = nil;
+    [self.randomNums addObjectsFromArray:[self getNewAvailableRandomNums]];
+    [self customUI];
 }
 
 - (IBAction)moreAction:(UIBarButtonItem *)sender {
