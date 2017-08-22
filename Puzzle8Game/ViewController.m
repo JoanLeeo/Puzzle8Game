@@ -19,6 +19,8 @@
     int _difficulty;//难度系数 3*3 4*4 5*5
     int _puzzleCount;
     BOOL _showBgImg;
+    
+    BOOL _showTip;
 
 }
 
@@ -259,13 +261,21 @@
     if (!_showBgImg) {
         return;
     }
+    _showTip = !_showTip;
+    
+    if (_showTip) {
+        [sender setTitle:@"关闭提示" forState:UIControlStateNormal];
+    } else {
+        [sender setTitle:@"显示提示" forState:UIControlStateNormal];
+    }
+    
     int i = 0;
     for (UIButton *puzzleBtn in _puzzleBgView.subviews) {
         
         UILabel *tipLb = [puzzleBtn viewWithTag:kTipLbTag + i];
         
         if (tipLb) {
-            tipLb.hidden = !tipLb.hidden;
+            tipLb.hidden = !_showTip;
         }
         i++;
     }
@@ -325,7 +335,32 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
     [picker dismissViewControllerAnimated:YES completion:^{
-        self.puzzleBgImg = info[UIImagePickerControllerEditedImage];
+        
+        UIImage *tmpImg = info[UIImagePickerControllerEditedImage];
+        if (fabs(tmpImg.size.width - tmpImg.size.height) < 2) {
+            self.puzzleBgImg = tmpImg;
+        } else {
+            
+            CGFloat x;
+            CGFloat y;
+            CGFloat w;
+            CGFloat h;
+            if (tmpImg.size.width > tmpImg.size.height) {
+                x = (tmpImg.size.width - tmpImg.size.height) * 0.5;
+                y = 0;
+                w = tmpImg.size.height;
+                h = w;
+            } else {
+                x = 0;
+                y = (tmpImg.size.height - tmpImg.size.width) * 0.5;
+                w = tmpImg.size.width;
+                h = w;
+            }
+            CGImageRef imgRef = CGImageCreateWithImageInRect(tmpImg.CGImage, CGRectMake(x, y, w, h));
+            self.puzzleBgImg = [UIImage imageWithCGImage:imgRef];
+        }
+        
+        
         _showBgImg = YES;
         [self refreshAction:nil];
     }];
@@ -363,7 +398,7 @@
         count++;
     }
     if (count == _puzzleCount) {
-        UIAlertController *alert =   [UIAlertController alertControllerWithTitle:@"厉害了！我的妞！" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alert =  [UIAlertController alertControllerWithTitle:@"厉害了！我的妞！" message:@"" preferredStyle:UIAlertControllerStyleAlert];
         [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil]];
         [self presentViewController:alert animated:YES completion:nil];
     }
