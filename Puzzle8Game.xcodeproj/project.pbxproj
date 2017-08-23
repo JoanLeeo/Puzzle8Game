@@ -16,6 +16,8 @@
 		4D4D19931F49E256009C7B4C /* Puzzle8GameTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D4D19921F49E256009C7B4C /* Puzzle8GameTests.m */; };
 		4D4D199E1F49E256009C7B4C /* Puzzle8GameUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D4D199D1F49E256009C7B4C /* Puzzle8GameUITests.m */; };
 		4DA0DA3E1F4C89E6009D2D07 /* PigViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DA0DA3D1F4C89E6009D2D07 /* PigViewController.m */; };
+		4DF8846C1F4DBF6E00A6417E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF8846B1F4DBF6E00A6417E /* AudioToolbox.framework */; };
+		4DF884701F4DC9C400A6417E /* SoundsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DF8846F1F4DC9C400A6417E /* SoundsTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +56,9 @@
 		4D4D199F1F49E256009C7B4C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4DA0DA3C1F4C89E6009D2D07 /* PigViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PigViewController.h; sourceTree = "<group>"; };
 		4DA0DA3D1F4C89E6009D2D07 /* PigViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PigViewController.m; sourceTree = "<group>"; };
+		4DF8846B1F4DBF6E00A6417E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		4DF8846E1F4DC9C400A6417E /* SoundsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundsTableViewController.h; sourceTree = "<group>"; };
+		4DF8846F1F4DC9C400A6417E /* SoundsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundsTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4DF8846C1F4DBF6E00A6417E /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,6 +94,7 @@
 				4D4D19911F49E256009C7B4C /* Puzzle8GameTests */,
 				4D4D199C1F49E256009C7B4C /* Puzzle8GameUITests */,
 				4D4D19761F49E256009C7B4C /* Products */,
+				4DF8846A1F4DBF6E00A6417E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -110,6 +117,8 @@
 				4D4D197F1F49E256009C7B4C /* ViewController.m */,
 				4DA0DA3C1F4C89E6009D2D07 /* PigViewController.h */,
 				4DA0DA3D1F4C89E6009D2D07 /* PigViewController.m */,
+				4DF8846E1F4DC9C400A6417E /* SoundsTableViewController.h */,
+				4DF8846F1F4DC9C400A6417E /* SoundsTableViewController.m */,
 				4D4D19811F49E256009C7B4C /* Main.storyboard */,
 				4D4D19841F49E256009C7B4C /* Assets.xcassets */,
 				4D4D19861F49E256009C7B4C /* LaunchScreen.storyboard */,
@@ -143,6 +152,14 @@
 				4D4D199F1F49E256009C7B4C /* Info.plist */,
 			);
 			path = Puzzle8GameUITests;
+			sourceTree = "<group>";
+		};
+		4DF8846A1F4DBF6E00A6417E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4DF8846B1F4DBF6E00A6417E /* AudioToolbox.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -280,6 +297,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4D4D19801F49E256009C7B4C /* ViewController.m in Sources */,
+				4DF884701F4DC9C400A6417E /* SoundsTableViewController.m in Sources */,
 				4DA0DA3E1F4C89E6009D2D07 /* PigViewController.m in Sources */,
 				4D4D197D1F49E256009C7B4C /* AppDelegate.m in Sources */,
 				4D4D197A1F49E256009C7B4C /* main.m in Sources */,

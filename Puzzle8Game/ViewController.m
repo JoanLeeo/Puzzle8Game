@@ -8,13 +8,16 @@
 
 #import "ViewController.h"
 #import "PigViewController.h"
+#import "SoundsTableViewController.h"
+
+#import <AudioToolbox/AudioToolbox.h>
 
 #define kPuzzleBtnGap 2
 
 
 #define kTipLbTag 1000
 
-@interface ViewController ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate, PigViewControllerDelegate> {
+@interface ViewController ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate, PigViewControllerDelegate, SoundsTableViewControllerDelegate> {
 
     UIButton *_maxPuzzleBtn;
     int _difficulty;//难度系数 3*3 4*4 5*5
@@ -22,8 +25,15 @@
     BOOL _showBgImg;
     
     BOOL _showTip;
+    BOOL _isSound;
+    unsigned int _sound;
+    
+    NSString *_addArrStr;
+    
+    
 
 }
+@property (weak, nonatomic) IBOutlet UILabel *soundLb;
 
 @property (nonatomic, strong) NSMutableArray *randomNums;//存储初始化nums
 @property (nonatomic, strong) UIView *puzzleBgView;
@@ -56,6 +66,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _sound = 999;
     
     
     _difficulty = 3;
@@ -257,7 +268,7 @@
     
 }
 - (IBAction)tipsBtnAction:(UIButton *)sender {
-    
+//    1104
     
     if (!_showBgImg) {
         return;
@@ -317,6 +328,7 @@
     
     
 }
+
 
 #pragma mark - UIImagePickerControllerDelegate
 
@@ -391,10 +403,16 @@
     
 }
 - (void)isWin {
+    
+    
+    AudioServicesPlaySystemSound(_sound);
+    
+    
+    
     NSInteger count = 0;
     for (int i = 0; i < _puzzleCount; i++) {
         if ([self.randomNums[i] intValue] != i) {
-            break;
+            return;
         }
         count++;
     }
@@ -455,11 +473,43 @@
     self.puzzleBgImg = [UIImage imageNamed:[NSString stringWithFormat:@"%ld.jpg", index]];
     [self refreshAction:nil];
 }
+#pragma mark - SoundsTableViewControllerDelegate
+- (void)changeSound:(NSInteger)soundId {
+    
+    _sound = (unsigned int)soundId;
+}
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     id page2 = segue.destinationViewController;
     // 设定委托为self
     [page2 setValue:self forKey:@"delegate"];
+    
+}
+- (IBAction)btn:(id)sender {
+    _sound++;
+    AudioServicesPlaySystemSound(_sound);
+    
+    self.soundLb.text = [NSString stringWithFormat:@"%u", _sound];
+}
+- (IBAction)less:(id)sender {
+    
+    _sound--;
+    AudioServicesPlaySystemSound(_sound);
+    self.soundLb.text = [NSString stringWithFormat:@"%u", _sound];
+    
+}
+- (IBAction)again:(id)sender {
+    
+    AudioServicesPlaySystemSound(_sound);
+}
+- (IBAction)add2Arr:(id)sender {
+    
+    _addArrStr = [NSString stringWithFormat:@"%@,@\"%d\"", _addArrStr,_sound];
+    
+    NSLog(@"%@\n", _addArrStr);
+    
+    
 }
 
+//
 @end
