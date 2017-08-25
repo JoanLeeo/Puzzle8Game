@@ -16,6 +16,12 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    
+    if ([[NSUserDefaults standardUserDefaults] integerForKey:@"bestRecord"] == 0) {
+        [[NSUserDefaults standardUserDefaults] setInteger:INT_MAX forKey:@"bestRecord"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
     // Override point for customization after application launch.
     return YES;
 }

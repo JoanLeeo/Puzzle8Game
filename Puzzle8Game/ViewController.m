@@ -32,7 +32,7 @@
     
     int _stepCount; //计步器
     
-    int _bestRecord;
+    NSInteger _bestRecord;
     
     
 
@@ -72,7 +72,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _bestRecord = INT_MAX;
+    _bestRecord = [[NSUserDefaults standardUserDefaults] integerForKey:@"bestRecord"];
+    
+    if (_bestRecord != INT_MAX) {
+        self.bestRecordLb.text = [NSString stringWithFormat:@"你的最佳记录：%ld", _bestRecord];
+    }
+    
     _stepCount = 0;
     _sound = 1104;
     _difficulty = 3;
@@ -429,7 +434,9 @@
         [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             if (_stepCount < _bestRecord) {
                 _bestRecord = _stepCount;
-                self.bestRecordLb.text = [NSString stringWithFormat:@"你的最佳记录：%d", _bestRecord];
+                [[NSUserDefaults standardUserDefaults] setInteger:_bestRecord forKey:@"bestRecord"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                self.bestRecordLb.text = [NSString stringWithFormat:@"你的最佳记录：%ld", _bestRecord];
             }
         }]];
         [self presentViewController:alert animated:YES completion:nil];
