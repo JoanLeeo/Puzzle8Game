@@ -30,10 +30,16 @@
     
     NSString *_addArrStr;
     
+    int _stepCount; //计步器
+    
+    int _bestRecord;
+    
     
 
 }
-@property (weak, nonatomic) IBOutlet UILabel *soundLb;
+@property (weak, nonatomic) IBOutlet UILabel *stepCountLb;
+@property (weak, nonatomic) IBOutlet UILabel *bestRecordLb;
+
 
 @property (nonatomic, strong) NSMutableArray *randomNums;//存储初始化nums
 @property (nonatomic, strong) UIView *puzzleBgView;
@@ -66,9 +72,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _sound = 999;
-    
-    
+    _bestRecord = INT_MAX;
+    _stepCount = 0;
+    _sound = 1104;
     _difficulty = 3;
     _puzzleCount = _difficulty * _difficulty;
     
@@ -87,7 +93,7 @@
     [_puzzleBgView removeFromSuperview];
     
     CGFloat puzzleBgViewX = 0;
-    CGFloat puzzleBgViewY = 64;
+    CGFloat puzzleBgViewY = 64 + 20;
     CGFloat puzzleBgViewW = [UIScreen mainScreen].bounds.size.width;
     CGFloat puzzleBgViewH = puzzleBgViewW;
     
@@ -99,7 +105,6 @@
     CGFloat puzzleBtnY = 0;
     CGFloat puzzleBtnW = puzzleBgViewW / _difficulty - kPuzzleBtnGap * 2;
     CGFloat puzzleBtnH = puzzleBtnW;
-    
     
     
     for (int i = 0; i < _puzzleCount; i++) {
@@ -148,9 +153,6 @@
             [puzzleBtn addTarget:self action:@selector(puzzleBtnAction:) forControlEvents:UIControlEventTouchUpInside];
             
         }
-        
-        
-        
     }
 }
 
@@ -316,6 +318,9 @@
 
 - (IBAction)refreshAction:(UIBarButtonItem *)sender {
     
+    _stepCount = 0;
+    self.stepCountLb.text = @"0";
+    
     if (_showBgImg) {
         [self cutPuzzleImg:self.puzzleBgImg];
     }
@@ -405,9 +410,12 @@
 - (void)isWin {
     
     
+    
+    _stepCount++;
+    
+    self.stepCountLb.text = [NSString stringWithFormat:@"%d", _stepCount];
+    
     AudioServicesPlaySystemSound(_sound);
-    
-    
     
     NSInteger count = 0;
     for (int i = 0; i < _puzzleCount; i++) {
@@ -418,7 +426,12 @@
     }
     if (count == _puzzleCount) {
         UIAlertController *alert =  [UIAlertController alertControllerWithTitle:@"厉害了！我的妞！" message:@"" preferredStyle:UIAlertControllerStyleAlert];
-        [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil]];
+        [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            if (_stepCount < _bestRecord) {
+                _bestRecord = _stepCount;
+                self.bestRecordLb.text = [NSString stringWithFormat:@"你的最佳记录：%d", _bestRecord];
+            }
+        }]];
         [self presentViewController:alert animated:YES completion:nil];
     }
 }
@@ -485,31 +498,5 @@
     [page2 setValue:self forKey:@"delegate"];
     
 }
-- (IBAction)btn:(id)sender {
-    _sound++;
-    AudioServicesPlaySystemSound(_sound);
-    
-    self.soundLb.text = [NSString stringWithFormat:@"%u", _sound];
-}
-- (IBAction)less:(id)sender {
-    
-    _sound--;
-    AudioServicesPlaySystemSound(_sound);
-    self.soundLb.text = [NSString stringWithFormat:@"%u", _sound];
-    
-}
-- (IBAction)again:(id)sender {
-    
-    AudioServicesPlaySystemSound(_sound);
-}
-- (IBAction)add2Arr:(id)sender {
-    
-    _addArrStr = [NSString stringWithFormat:@"%@,@\"%d\"", _addArrStr,_sound];
-    
-    NSLog(@"%@\n", _addArrStr);
-    
-    
-}
-
 //
 @end
