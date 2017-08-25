@@ -75,7 +75,7 @@
     _bestRecord = [[NSUserDefaults standardUserDefaults] integerForKey:@"bestRecord"];
     
     if (_bestRecord != INT_MAX) {
-        self.bestRecordLb.text = [NSString stringWithFormat:@"你的最佳记录：%ld", _bestRecord];
+        self.bestRecordLb.text = [NSString stringWithFormat:@"你的最佳记录：%ld", (long)_bestRecord];
     }
     
     _stepCount = 0;
@@ -430,13 +430,14 @@
         count++;
     }
     if (count == _puzzleCount) {
-        UIAlertController *alert =  [UIAlertController alertControllerWithTitle:@"厉害了！我的妞！" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+        ;
+        UIAlertController *alert =  [UIAlertController alertControllerWithTitle:@"恭喜你" message:[NSString stringWithFormat:@"用了%ld步成功过关！", (long)_stepCount] preferredStyle:UIAlertControllerStyleAlert];
         [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             if (_stepCount < _bestRecord) {
                 _bestRecord = _stepCount;
                 [[NSUserDefaults standardUserDefaults] setInteger:_bestRecord forKey:@"bestRecord"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
-                self.bestRecordLb.text = [NSString stringWithFormat:@"你的最佳记录：%ld", _bestRecord];
+                self.bestRecordLb.text = [NSString stringWithFormat:@"你的最佳记录：%ld", (long)_bestRecord];
             }
         }]];
         [self presentViewController:alert animated:YES completion:nil];
@@ -490,7 +491,7 @@
 
 - (void)changePig:(NSInteger)index {
     _showBgImg = YES;
-    self.puzzleBgImg = [UIImage imageNamed:[NSString stringWithFormat:@"%ld.jpg", index]];
+    self.puzzleBgImg = [UIImage imageNamed:[NSString stringWithFormat:@"%ld.jpg", (long)index]];
     [self refreshAction:nil];
 }
 #pragma mark - SoundsTableViewControllerDelegate
