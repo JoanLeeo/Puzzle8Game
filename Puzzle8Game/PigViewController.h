@@ -10,6 +10,7 @@
 @protocol PigViewControllerDelegate <NSObject>
 
 
+
 - (void)changePig:(NSInteger)index;
 
 @end
