@@ -449,7 +449,6 @@
     //随机数字
     int inverCount = 0;
     while (1) {
-        inverCount = 0;
         NSMutableArray *initializeNums = [NSMutableArray array];//初始化0-n数字
         for (int i = 0; i < _puzzleCount; i++) {
             [initializeNums addObject:@(i)];
@@ -466,6 +465,7 @@
             
         }
         //判断是否可还原拼图
+        inverCount = 0;
         int curNum = 0;
         int nextNum = 0;
         for (int i = 0; i < _puzzleCount; i++) {
@@ -482,7 +482,7 @@
             }
             
         }
-        if (!(inverCount % 2)) {
+        if (!(inverCount % 2)) {//对2求余，余0，逆序数为偶数，即偶排列；否则，为奇排列
             return randomNums;
         }
         
@@ -507,4 +507,5 @@
     
 }
 //
+
 @end
